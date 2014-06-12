@@ -176,9 +176,8 @@ window.countNQueensSolutions = function(n) {
   return solutionCount;
 };
 
-
 // // Time Profiling:
-// var now = new Date();
+var now = new Date();
 
 // countNQueensSolutions(5);
 
@@ -216,12 +215,24 @@ window.countNQueensSolutions = function(n) {
 
 // now = new Date();
 
-// console.log(countNQueensSolutions(11));
+// countNQueensSolutions(11);
 
 // console.log('11', (new Date() - now));
 
 // now = new Date();
 
-// console.log(countNQueensSolutions(12));
+// countNQueensSolutions(12);
 
 // console.log('12', (new Date() - now));
+
+// now = new Date();
+
+// countNQueensSolutions(13);
+
+// console.log('13', (new Date() - now));
+
+// now = new Date();
+
+// countNQueensSolutions(14);
+
+// console.log('14', (new Date() - now));
