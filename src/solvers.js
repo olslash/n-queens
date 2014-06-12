@@ -13,6 +13,36 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
+var myBoard = function() {
+  this.colCon = {};
+  this.majCon = {};
+  this.minCon = {};
+  this.rowCon = {};
+};
+
+myBoard.prototype.toggle = function (row, col) {
+  this.colCon[col] = !this.colCon[col];
+  this.majCon[col-row] = !this.majCon[col-row];
+  this.minCon[col+row] = !this.minCon[col+row];
+  this.rowCon[row] = !this.rowCon[row];
+};
+
+myBoard.prototype.hasRowConflictAt = function(row) {
+  return !!this.rowCon[row];
+};
+
+myBoard.prototype.hasColConflictAt = function(col) {
+  return !!this.colCon[col];
+};
+
+myBoard.prototype.hasMajorDiagonalConflictAt = function(row, col) {
+  return !!this.majCon[col-row];
+};
+
+myBoard.prototype.hasMinorDiagonalConflictAt = function(row, col) {
+  return !!this.minCon[col+row];
+};
+
 window.findNRooksSolution = function(n) {
   var solution;
 
@@ -48,7 +78,7 @@ window.findNRooksSolution = function(n) {
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
 
-  var curBoard = new Board({'n': n});
+  var curBoard = new myBoard();
 
   var placeElemInRow = function(curCol) {
     if (curCol === n){
@@ -56,19 +86,19 @@ window.countNRooksSolutions = function(n) {
       return;
     }
     for (var curRow = 0; curRow < n; curRow++){
-      curBoard.togglePiece(curRow, curCol);
       if (!curBoard.hasRowConflictAt(curRow)){
+        curBoard.toggle(curRow, curCol);
         placeElemInRow(curCol + 1);
+        curBoard.toggle(curRow, curCol);
       }
-      curBoard.togglePiece(curRow, curCol);
     }
   };
 
   // manually loop over first column for n/2 rows
   for(var i = 0; i < Math.floor(n/2); i++){
-    curBoard.togglePiece(i, 0);
+    curBoard.toggle(i, 0);
     placeElemInRow(1);
-    curBoard.togglePiece(i, 0);
+    curBoard.toggle(i, 0);
   }
 
   // doubling to account for symmetry
@@ -77,9 +107,9 @@ window.countNRooksSolutions = function(n) {
 
     // if odd, recurse over placement in median row
     if((n % 2) === 1) {
-      curBoard.togglePiece(Math.ceil(n/2), 0);
+      curBoard.toggle(Math.ceil(n/2), 0);
       placeElemInRow(1);
-      curBoard.togglePiece(Math.ceil(n/2), 0);
+      curBoard.toggle(Math.ceil(n/2), 0);
     }
   } else {
     // special case: n === 1  --> loop over first column not initiated
@@ -131,7 +161,7 @@ window.findNQueensSolution = function(n) {
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
 
-  var curBoard = new Board({'n': n});
+  var curBoard = new myBoard();
 
   var placeElemInRow = function(curCol) {
     if (curCol === n){
@@ -139,22 +169,22 @@ window.countNQueensSolutions = function(n) {
       return;
     }
     for (var curRow = 0; curRow < n; curRow++){
-      curBoard.togglePiece(curRow, curCol);
       if (!(
           curBoard.hasRowConflictAt(curRow)
-          || curBoard.hasMajorDiagonalConflictAt(curCol - curRow)
-          || curBoard.hasMinorDiagonalConflictAt(curRow + curCol))) {
+          || curBoard.hasMajorDiagonalConflictAt(curRow, curCol)
+          || curBoard.hasMinorDiagonalConflictAt(curRow, curCol))) {
+        curBoard.toggle(curRow, curCol);
         placeElemInRow(curCol + 1);
+        curBoard.toggle(curRow, curCol);
       }
-      curBoard.togglePiece(curRow, curCol);
     }
   };
 
   // manually loop over first column for n/2 rows
   for(var i = 0; i < Math.floor(n/2); i++){
-    curBoard.togglePiece(i, 0);
+    curBoard.toggle(i, 0);
     placeElemInRow(1);
-    curBoard.togglePiece(i, 0);
+    curBoard.toggle(i, 0);
   }
 
   // double to account for symmetry
@@ -163,9 +193,9 @@ window.countNQueensSolutions = function(n) {
 
     // if odd, place in median row of column 0 and recurse over other columns
     if((n % 2) === 1) {
-      curBoard.togglePiece(Math.ceil(n/2), 0);
+      curBoard.toggle(Math.ceil(n/2), 0);
       placeElemInRow(1);
-      curBoard.togglePiece(Math.ceil(n/2), 0);
+      curBoard.toggle(Math.ceil(n/2), 0);
     }
   } else {
     // special case: n === 1 or 0  --> loop over first column not initiated
@@ -177,7 +207,7 @@ window.countNQueensSolutions = function(n) {
 };
 
 // // Time Profiling:
-var now = new Date();
+// var now = new Date();
 
 // countNQueensSolutions(5);
 
@@ -236,3 +266,9 @@ var now = new Date();
 // countNQueensSolutions(14);
 
 // console.log('14', (new Date() - now));
+
+// now = new Date();
+
+// countNQueensSolutions(15);
+
+// console.log('15', (new Date() - now));
