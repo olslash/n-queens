@@ -111,8 +111,8 @@ window.findNQueensSolution = function(n) {
         curBoard.togglePiece(curRow, curCol);
         if (!(
           curBoard.hasRowConflictAt(curRow)
-          || curBoard.hasMajorDiagonalConflictAt(curBoard._getFirstRowColumnIndexForMajorDiagonalOn(curRow, curCol))
-          || curBoard.hasMinorDiagonalConflictAt(curBoard._getFirstRowColumnIndexForMinorDiagonalOn(curRow, curCol)))){
+          || curBoard.hasMajorDiagonalConflictAt(curCol - curRow)
+          || curBoard.hasMinorDiagonalConflictAt(curRow + curCol))){
           placeElemInRow(curCol + 1);
         }
         curBoard.togglePiece(curRow, curCol);
@@ -142,8 +142,8 @@ window.countNQueensSolutions = function(n) {
       curBoard.togglePiece(curRow, curCol);
       if (!(
           curBoard.hasRowConflictAt(curRow)
-          || curBoard.hasMajorDiagonalConflictAt(curBoard._getFirstRowColumnIndexForMajorDiagonalOn(curRow, curCol))
-          || curBoard.hasMinorDiagonalConflictAt(curBoard._getFirstRowColumnIndexForMinorDiagonalOn(curRow, curCol)))){
+          || curBoard.hasMajorDiagonalConflictAt(curCol - curRow)
+          || curBoard.hasMinorDiagonalConflictAt(curRow + curCol))) {
         placeElemInRow(curCol + 1);
       }
       curBoard.togglePiece(curRow, curCol);
@@ -157,18 +157,18 @@ window.countNQueensSolutions = function(n) {
     curBoard.togglePiece(i, 0);
   }
 
-  // doubling to account for symmetry
+  // double to account for symmetry
   if(n > 1) {
     solutionCount *= 2;
 
-    // if odd, recurse over placement in median row
+    // if odd, place in median row of column 0 and recurse over other columns
     if((n % 2) === 1) {
       curBoard.togglePiece(Math.ceil(n/2), 0);
       placeElemInRow(1);
       curBoard.togglePiece(Math.ceil(n/2), 0);
     }
   } else {
-    // special case: n === 1  --> loop over first column not initiated
+    // special case: n === 1 or 0  --> loop over first column not initiated
     solutionCount = 1;
   }
 
@@ -177,41 +177,51 @@ window.countNQueensSolutions = function(n) {
 };
 
 
-// Time Profiling:
-var now = new Date();
+// // Time Profiling:
+// var now = new Date();
 
-countNQueensSolutions(5);
+// countNQueensSolutions(5);
 
-console.log('5', (new Date() - now));
+// console.log('5', (new Date() - now));
 
-now = new Date();
+// now = new Date();
 
-countNQueensSolutions(6);
+// countNQueensSolutions(6);
 
-console.log('6', (new Date() - now));
-now = new Date();
+// console.log('6', (new Date() - now));
 
-countNQueensSolutions(7);
+// now = new Date();
 
-console.log('7', (new Date() - now));
-now = new Date();
+// countNQueensSolutions(7);
 
-countNQueensSolutions(8);
+// console.log('7', (new Date() - now));
 
-console.log('8', (new Date() - now));
-now = new Date();
+// now = new Date();
 
-countNQueensSolutions(9);
+// countNQueensSolutions(8);
 
-console.log('9', (new Date() - now));
-now = new Date();
+// console.log('8', (new Date() - now));
 
-countNQueensSolutions(10);
+// now = new Date();
 
-console.log('10', (new Date() - now));
+// countNQueensSolutions(9);
 
-now = new Date();
+// console.log('9', (new Date() - now));
 
-console.log(countNQueensSolutions(11));
+// now = new Date();
 
-console.log('11', (new Date() - now));
+// countNQueensSolutions(10);
+
+// console.log('10', (new Date() - now));
+
+// now = new Date();
+
+// console.log(countNQueensSolutions(11));
+
+// console.log('11', (new Date() - now));
+
+// now = new Date();
+
+// console.log(countNQueensSolutions(12));
+
+// console.log('12', (new Date() - now));
