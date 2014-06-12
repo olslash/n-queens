@@ -64,7 +64,27 @@ window.countNRooksSolutions = function(n) {
     }
   };
 
-  placeElemInRow(0);
+  // manually loop over first column for n/2 rows
+  for(var i = 0; i < Math.floor(n/2); i++){
+    curBoard.togglePiece(i, 0);
+    placeElemInRow(1);
+    curBoard.togglePiece(i, 0);
+  }
+
+  // doubling to account for symmetry
+  if(n !== 1) {
+    solutionCount *= 2;
+
+    // if odd, recurse over placement in median row
+    if((n % 2) === 1) {
+      curBoard.togglePiece(Math.ceil(n/2), 0);
+      placeElemInRow(1);
+      curBoard.togglePiece(Math.ceil(n/2), 0);
+    }
+  } else {
+    // special case: n === 1  --> loop over first column not initiated
+    solutionCount = 1;
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
@@ -130,7 +150,27 @@ window.countNQueensSolutions = function(n) {
     }
   };
 
-  placeElemInRow(0);
+  // manually loop over first column for n/2 rows
+  for(var i = 0; i < Math.floor(n/2); i++){
+    curBoard.togglePiece(i, 0);
+    placeElemInRow(1);
+    curBoard.togglePiece(i, 0);
+  }
+
+  // doubling to account for symmetry
+  if(n > 1) {
+    solutionCount *= 2;
+
+    // if odd, recurse over placement in median row
+    if((n % 2) === 1) {
+      curBoard.togglePiece(Math.ceil(n/2), 0);
+      placeElemInRow(1);
+      curBoard.togglePiece(Math.ceil(n/2), 0);
+    }
+  } else {
+    // special case: n === 1  --> loop over first column not initiated
+    solutionCount = 1;
+  }
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
@@ -138,40 +178,40 @@ window.countNQueensSolutions = function(n) {
 
 
 // Time Profiling:
-// var now = new Date();
+var now = new Date();
 
-// countNQueensSolutions(5);
+countNQueensSolutions(5);
 
-// console.log('5', (new Date() - now));
+console.log('5', (new Date() - now));
 
-// now = new Date();
+now = new Date();
 
-// countNQueensSolutions(6);
+countNQueensSolutions(6);
 
-// console.log('6', (new Date() - now));
-// now = new Date();
+console.log('6', (new Date() - now));
+now = new Date();
 
-// countNQueensSolutions(7);
+countNQueensSolutions(7);
 
-// console.log('7', (new Date() - now));
-// now = new Date();
+console.log('7', (new Date() - now));
+now = new Date();
 
-// countNQueensSolutions(8);
+countNQueensSolutions(8);
 
-// console.log('8', (new Date() - now));
-// now = new Date();
+console.log('8', (new Date() - now));
+now = new Date();
 
-// countNQueensSolutions(9);
+countNQueensSolutions(9);
 
-// console.log('9', (new Date() - now));
-// now = new Date();
+console.log('9', (new Date() - now));
+now = new Date();
 
-// countNQueensSolutions(10);
+countNQueensSolutions(10);
 
-// console.log('10', (new Date() - now));
+console.log('10', (new Date() - now));
 
-// now = new Date();
+now = new Date();
 
 console.log(countNQueensSolutions(11));
 
-// console.log('11', (new Date() - now));
+console.log('11', (new Date() - now));
